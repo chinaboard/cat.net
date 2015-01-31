@@ -22,7 +22,7 @@ namespace HttpModuleTest
             context.Response.Write("msg  : " + CatHelper.GetMessageId());
             context.Response.Write(Environment.NewLine);
 
-            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("http://localhost:64198/index.ashx");
+            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("http://localhost:60145/index.ashx");
             Com.Dianping.Cat.Util.CatHelper.CatHelperMsg catResponseMessage = null;
             var tran = CatHelper.NewTransaction(out catResponseMessage, "index", "test", httpRequest);
             //httpRequest.Timeout = 2000;
@@ -49,9 +49,9 @@ namespace HttpModuleTest
             {
                 var catReqmsg = catResponseMessage;
                 httpRequest = (HttpWebRequest)WebRequest.Create("http://localhost:64198/index.ashx");
-                //httpRequest.Headers[CatHelper.CatParentIdTag] = catpar;
-                //httpRequest.Headers[CatHelper.CatIdTag] = catid;
-                //httpRequest.Headers[CatHelper.CatRootIdTag] = catroot;
+                httpRequest.Headers[CatHelper.CatParentIdTag] = catpar;
+                httpRequest.Headers[CatHelper.CatIdTag] = catid;
+                httpRequest.Headers[CatHelper.CatRootIdTag] = catroot;
                 catResponseMessage = null;
                 tran = CatHelper.NewTransaction(out catResponseMessage, "index", "test", httpRequest);
                 //httpRequest.Timeout = 2000;

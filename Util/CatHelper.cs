@@ -89,7 +89,7 @@ namespace Com.Dianping.Cat.Util
 
             response.Headers[CatHelper.CatRootIdTag] = catRootId;
             response.Headers[CatHelper.CatParentIdTag] = catParentId;
-            response.Headers[CatHelper.CatIdTag] = catId;
+            response.Headers[CatHelper.CatIdTag] = response.Headers[CatHelper.CatIdTag] ?? catId;
 
             request.Headers[CatHelper.CatRootIdTag] = catRootId;
             request.Headers[CatHelper.CatParentIdTag] = catParentId;
@@ -129,7 +129,7 @@ namespace Com.Dianping.Cat.Util
 
             response.Headers[CatHelper.CatRootIdTag] = catRootId;
             response.Headers[CatHelper.CatParentIdTag] = catParentId;
-            response.Headers[CatHelper.CatIdTag] = catId;
+            response.Headers[CatHelper.CatIdTag] = webResponse != null ? ctx.Response.Headers[CatHelper.CatIdTag] : catId;
 
 
             request.Headers[CatHelper.CatRootIdTag] = catRootId;
@@ -171,7 +171,7 @@ namespace Com.Dianping.Cat.Util
 
             response.Headers[CatHelper.CatRootIdTag] = catRootId;
             response.Headers[CatHelper.CatParentIdTag] = catParentId;
-            response.Headers[CatHelper.CatIdTag] = catId;
+            response.Headers[CatHelper.CatIdTag] = ctx.Response.Headers[CatHelper.CatIdTag];
 
             request.Headers[CatHelper.CatRootIdTag] = catRootId;
             request.Headers[CatHelper.CatParentIdTag] = catParentId;
@@ -212,7 +212,7 @@ namespace Com.Dianping.Cat.Util
 
             response.Headers[CatHelper.CatRootIdTag] = catRootId;
             response.Headers[CatHelper.CatParentIdTag] = catParentId;
-            response.Headers[CatHelper.CatIdTag] = catId;
+            response.Headers[CatHelper.CatIdTag] = response.Headers[CatHelper.CatIdTag] ?? catId;
 
             request.Headers[CatHelper.CatRootIdTag] = catRootId;
             request.Headers[CatHelper.CatParentIdTag] = catParentId;
