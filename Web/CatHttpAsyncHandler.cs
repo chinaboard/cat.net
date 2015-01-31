@@ -23,7 +23,8 @@ namespace Com.Dianping.Cat.Web
 
         public IAsyncResult BeginProcessRequest(HttpContext context, AsyncCallback cb, object extraData)
         {
-            var tran = CatHelper.BeginServerTransaction("URL", response: context.Response);
+            Com.Dianping.Cat.Util.CatHelper.CatHelperMsg catResponseMessage = null;
+            var tran = CatHelper.NewTransaction(out catResponseMessage, "URL", "CatHttpAsyncHandler");
             try
             {
                 if (extraData == null)
@@ -64,7 +65,8 @@ namespace Com.Dianping.Cat.Web
 
         public void ProcessRequest(HttpContext context)
         {
-            var tran = CatHelper.BeginServerTransaction("URL", response: context.Response);
+            Com.Dianping.Cat.Util.CatHelper.CatHelperMsg catResponseMessage = null;
+            var tran = CatHelper.NewTransaction(out catResponseMessage, "URL", "CatHttpAsyncHandler");
             try
             {
                 asyncHandler.ProcessRequest(context);

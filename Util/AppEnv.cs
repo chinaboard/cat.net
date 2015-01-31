@@ -9,9 +9,9 @@ namespace Com.Dianping.Cat.Util
 {
     public static class AppEnv
     {
-        public static string IP { get { return getLocalIP(); } }
+        public static string IP { get { return GetLocalIP(); } }
 
-        private static string getLocalIP()
+        private static string GetLocalIP()
         {
             try
             {

@@ -12,7 +12,6 @@ namespace Com.Dianping.Cat.Web
 {
     public class CatHttpHandler : IHttpHandler, IRequiresSessionState
     {
-        private ITransaction tran = null;
         private IHttpHandler handler;
 
         public bool IsReusable { get { return handler.IsReusable; } }
@@ -24,7 +23,8 @@ namespace Com.Dianping.Cat.Web
 
         public void ProcessRequest(HttpContext context)
         {
-            tran = CatHelper.BeginServerTransaction("URL", response: context.Response);
+            Com.Dianping.Cat.Util.CatHelper.CatHelperMsg catResponseMessage = null;
+            var tran = CatHelper.NewTransaction(out catResponseMessage, "URL", "CatHttpHandler");
             try
             {
                 handler.ProcessRequest(context);

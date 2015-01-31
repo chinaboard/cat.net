@@ -38,7 +38,7 @@ namespace Com.Dianping.Cat
         public static void Initialize(string configFile = null)
         {
             if (string.IsNullOrWhiteSpace(configFile))
-                configFile = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "App_Data\\TCConfig\\CatConfig.xml");
+                configFile = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "App_Data\\CatConfig.xml");
             if (Instance._mInitialized)
             {
                 Logger.Warn("Cat can't initialize again with config file(%s), IGNORED!", configFile);
