@@ -77,9 +77,9 @@ namespace Com.Dianping.Cat.Util
                 tree = Cat.GetManager().ThreadLocalMessageTree;
             }
 
-            var catRootId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatRootIdTag]) ? tree.RootMessageId ?? tree.MessageId : request.Headers[CatHelper.CatRootIdTag];
-            var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : request.Headers[CatHelper.CatParentIdTag];
-            var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag];
+            var catRootId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatRootIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatRootIdTag]) ? tree.RootMessageId ?? tree.MessageId : response.Headers[CatHelper.CatRootIdTag] : request.Headers[CatHelper.CatRootIdTag];
+            var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : response.Headers[CatHelper.CatParentIdTag] : request.Headers[CatHelper.CatParentIdTag];
+            var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag] : request.Headers[CatHelper.CatIdTag];
 
             Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
 
@@ -117,9 +117,9 @@ namespace Com.Dianping.Cat.Util
                 tree = Cat.GetManager().ThreadLocalMessageTree;
             }
 
-            var catRootId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatRootIdTag]) ? tree.RootMessageId ?? tree.MessageId : request.Headers[CatHelper.CatRootIdTag];
-            var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : request.Headers[CatHelper.CatParentIdTag];
-            var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag];
+            var catRootId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatRootIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatRootIdTag]) ? tree.RootMessageId ?? tree.MessageId : response.Headers[CatHelper.CatRootIdTag] : request.Headers[CatHelper.CatRootIdTag];
+            var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : response.Headers[CatHelper.CatParentIdTag] : request.Headers[CatHelper.CatParentIdTag];
+            var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag] : request.Headers[CatHelper.CatIdTag];
 
             Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
 
@@ -159,9 +159,9 @@ namespace Com.Dianping.Cat.Util
                 tree = Cat.GetManager().ThreadLocalMessageTree;
             }
 
-            var catRootId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatRootIdTag]) ? tree.RootMessageId ?? tree.MessageId : request.Headers[CatHelper.CatRootIdTag];
-            var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : request.Headers[CatHelper.CatParentIdTag];
-            var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag];
+            var catRootId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatRootIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatRootIdTag]) ? tree.RootMessageId ?? tree.MessageId : response.Headers[CatHelper.CatRootIdTag] : request.Headers[CatHelper.CatRootIdTag];
+            var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : response.Headers[CatHelper.CatParentIdTag] : request.Headers[CatHelper.CatParentIdTag];
+            var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag] : request.Headers[CatHelper.CatIdTag];
 
             Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
 
