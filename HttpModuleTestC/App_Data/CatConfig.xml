@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <doc>
-  <domain id="AA_TESTB" ip="" enabled="true" />
+  <domain id="AA_TESTC" ip="" enabled="true" />
   <servers>
     <server ip="10.13.13.71" port="2280" />
   </servers>

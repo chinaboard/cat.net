@@ -34,7 +34,7 @@ namespace Com.Dianping.Cat.Web
             }
             catch (Exception ex)
             {
-                Cat.GetProducer().LogError(ex);
+                Cat.LogError(ex);
                 tran.SetStatus(ex);
                 throw;
             }
@@ -53,7 +53,7 @@ namespace Com.Dianping.Cat.Web
             }
             catch (Exception ex)
             {
-                Cat.GetProducer().LogError(ex);
+                Cat.LogError(ex);
                 tran.SetStatus(ex);
                 throw;
             }
@@ -77,7 +77,7 @@ namespace Com.Dianping.Cat.Web
                 {
                     return;
                 }
-                Cat.GetProducer().LogError(ex);
+                Cat.LogError(ex);
                 tran.SetStatus(ex);
                 throw;
             }

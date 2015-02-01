@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <doc>
-  <domain id="BA_TEST" ip="" enabled="true" />
+  <domain id="AA_TESTA" ip="" enabled="true" />
   <servers>
-    <server ip="127.0.0.1" port="2280" />
+    <server ip="10.13.13.71" port="2280" />
   </servers>
 </doc>

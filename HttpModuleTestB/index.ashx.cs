@@ -16,21 +16,15 @@ namespace HttpModuleTestB
 
         public void ProcessRequest(HttpContext context)
         {
-            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("http://localhost:60145/test.ashx");
+            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("http://localhost:7339/index.ashx");
             Com.Dianping.Cat.Util.CatHelper.CatHelperMsg catResponseMessage = null;
-            var tran = CatHelper.NewTransaction(out catResponseMessage, "index", "test", httpRequest, isRequest: true);
-            //httpRequest.Timeout = 2000;
+            var tran = CatHelper.NewTransaction(out catResponseMessage, "index", "localtest", httpRequest, isRequest: true);
             httpRequest.Method = "GET";
             HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             StreamReader sr = new StreamReader(httpResponse.GetResponseStream());
             string result = sr.ReadToEnd();
             sr.Close();
-            context.Response.Write(Environment.NewLine);
-            context.Response.Write("Broot : " + httpResponse.Headers[CatHelper.CatRootIdTag]);
-            context.Response.Write(Environment.NewLine);
-            context.Response.Write("Bparent:" + httpResponse.Headers[CatHelper.CatParentIdTag]);
-            context.Response.Write(Environment.NewLine);
-            context.Response.Write("Bmsg  : " + httpResponse.Headers[CatHelper.CatIdTag]);
+            context.Response.Write("-B" + result);
             tran.Complete();
         }
 

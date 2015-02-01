@@ -53,7 +53,7 @@ namespace Com.Dianping.Cat.Util
             }
             //指定catrequestmessage
             else
-                catResponseMessage = LocalCatRequestMessage(type, name, catRequestMessage);
+                catResponseMessage = LocalCatRequestMessage(type, name, catRequestMessage, isRequest);
 
 #if DEBUG
             PrintDebugInfo();
@@ -67,8 +67,6 @@ namespace Com.Dianping.Cat.Util
 
             var request = ctx.Request;
             var response = ctx.Response;
-
-            Cat.LogEvent(type, request.Path, "0", request.RawUrl);
 
             var tree = Cat.GetManager().ThreadLocalMessageTree;
             if (tree == null)
@@ -93,9 +91,10 @@ namespace Com.Dianping.Cat.Util
             request.Headers[CatHelper.CatParentIdTag] = catParentId;
             request.Headers[CatHelper.CatIdTag] = catId;
 
-            Cat.GetProducer().LogEvent(type, type + ".Server", "0", GetURLServerValue(request));
-            Cat.GetProducer().LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
-            Cat.GetProducer().LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
+            Cat.LogEvent(type, type + ".Type", "0", isRequest ? "Request" : "Response");
+            Cat.LogEvent(type, type + ".Server", "0", GetURLServerValue(request));
+            Cat.LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
+            Cat.LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
 
             if (isRequest)
                 Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
@@ -108,8 +107,6 @@ namespace Com.Dianping.Cat.Util
             var ctx = System.Web.HttpContext.Current;
 
             var response = webResponse ?? ctx.Response;
-
-            Cat.LogEvent(type, request.RequestUri.AbsoluteUri, "0", request.RequestUri.ToString());
 
             var tree = Cat.GetManager().ThreadLocalMessageTree;
             if (tree == null)
@@ -134,9 +131,10 @@ namespace Com.Dianping.Cat.Util
             request.Headers[CatHelper.CatParentIdTag] = catParentId;
             request.Headers[CatHelper.CatIdTag] = catId;
 
-            Cat.GetProducer().LogEvent(type, type + ".Server", "0", "LoaclCustomHttpRequest");
-            Cat.GetProducer().LogEvent(type, type + ".Method", "0", string.Format("{0} {1}", request.Method, request.RequestUri));
-            Cat.GetProducer().LogEvent(type, type + ".Client", "0", AppEnv.IP);
+            Cat.LogEvent(type, type + ".Type", "0", isRequest ? "Request" : "Response");
+            Cat.LogEvent(type, type + ".Server", "0", "LoaclCustomHttpRequest");
+            Cat.LogEvent(type, type + ".Method", "0", string.Format("{0} {1}", request.Method, request.RequestUri));
+            Cat.LogEvent(type, type + ".Client", "0", AppEnv.IP);
 
             if (isRequest)
                 Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
@@ -149,8 +147,6 @@ namespace Com.Dianping.Cat.Util
             var ctx = System.Web.HttpContext.Current;
             var request = ctx.Request;
             var response = webResponse;
-
-            Cat.LogEvent(type, request.Path, "0", request.RawUrl);
 
             var tree = Cat.GetManager().ThreadLocalMessageTree;
             if (tree == null)
@@ -175,9 +171,10 @@ namespace Com.Dianping.Cat.Util
             request.Headers[CatHelper.CatParentIdTag] = catParentId;
             request.Headers[CatHelper.CatIdTag] = catId;
 
-            Cat.GetProducer().LogEvent(type, type + ".Server", "0", GetURLServerValue(request));
-            Cat.GetProducer().LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
-            Cat.GetProducer().LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
+            Cat.LogEvent(type, type + ".Type", "0", isRequest ? "Request" : "Response");
+            Cat.LogEvent(type, type + ".Server", "0", GetURLServerValue(request));
+            Cat.LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
+            Cat.LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
 
             if (isRequest)
                 Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
@@ -191,8 +188,6 @@ namespace Com.Dianping.Cat.Util
 
             var request = ctx.Request;
             var response = ctx.Response;
-
-            Cat.LogEvent(type, request.Path, "0", request.RawUrl);
 
             var tree = Cat.GetManager().ThreadLocalMessageTree;
             if (tree == null)
@@ -217,9 +212,10 @@ namespace Com.Dianping.Cat.Util
             request.Headers[CatHelper.CatParentIdTag] = catParentId;
             request.Headers[CatHelper.CatIdTag] = catId;
 
-            Cat.GetProducer().LogEvent(type, type + ".Server", "0", GetURLServerValue(request));
-            Cat.GetProducer().LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
-            Cat.GetProducer().LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
+
+            Cat.LogEvent(type, type + ".Server", "0", GetURLServerValue(request));
+            Cat.LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
+            Cat.LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
 
             if (isRequest)
                 Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
@@ -227,7 +223,7 @@ namespace Com.Dianping.Cat.Util
             return new CatHelperMsg(catRootId, catParentId, catId, name);
         }
 
-        private static CatHelperMsg LocalCatRequestMessage(string type, string name, CatHelperMsg catRequestMessage = null)
+        private static CatHelperMsg LocalCatRequestMessage(string type, string name, CatHelperMsg catRequestMessage = null, bool isRequest = false)
         {
             var tree = Cat.GetManager().ThreadLocalMessageTree;
             if (tree == null)
@@ -244,12 +240,11 @@ namespace Com.Dianping.Cat.Util
             tree.ParentMessageId = catParentId;
             tree.MessageId = catId;
 
-            if (catRequestMessage == null)
-                Cat.LogEvent(type, name, "0", string.Format("Mothed.Request : {0}", name));
-            else
-                Cat.LogEvent(type, name, "0", string.Format("Mothed.Response : {0}", catRequestMessage.RequestMothed));
+            Cat.LogEvent(type, type + ".Type", "0", isRequest ? "Request" : "Response");
+            Cat.LogEvent(type, name, "0", catRequestMessage == null ? string.Format("Mothed.Request : {0}", name) : string.Format("Mothed.Response : {0}", catRequestMessage.RequestMothed));
 
-            Cat.LogEvent("RemoteCall", "Request", "0", catId);
+            if (isRequest)
+                Cat.LogEvent("RemoteCall", "Request", "0", catId);
 
             return new CatHelperMsg(catRootId, catId, Cat.GetProducer().CreateMessageId(), name);
         }

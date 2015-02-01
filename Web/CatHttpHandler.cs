@@ -36,7 +36,7 @@ namespace Com.Dianping.Cat.Web
                 {
                     return;
                 }
-                Cat.GetProducer().LogError(ex);
+                Cat.LogError(ex);
                 tran.SetStatus(ex);
                 throw;
             }

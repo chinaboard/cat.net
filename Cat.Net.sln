@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cat.Net", "Cat.Net.csproj", "{7B5F7994-F1D1-494D-85B9-935A478591AD}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpModuleTest", "HttpModuleTest\HttpModuleTest.csproj", "{4B3B776C-974D-4075-A73B-2AA6975C3253}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpModuleTestB", "HttpModuleTestB\HttpModuleTestB.csproj", "{F2AB2869-E045-4D5E-8397-E4C923109CAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpModuleTestC", "HttpModuleTestC\HttpModuleTestC.csproj", "{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,16 @@ Global
 		{F2AB2869-E045-4D5E-8397-E4C923109CAF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F2AB2869-E045-4D5E-8397-E4C923109CAF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F2AB2869-E045-4D5E-8397-E4C923109CAF}.Release|x86.ActiveCfg = Release|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B0F919F1-D6BA-44DA-ACE8-AA6D536C1451}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
