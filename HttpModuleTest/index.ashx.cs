@@ -24,7 +24,7 @@ namespace HttpModuleTest
 
             HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("http://localhost:60145/test.ashx");
             Com.Dianping.Cat.Util.CatHelper.CatHelperMsg catResponseMessage = null;
-            var tran = CatHelper.NewTransaction(out catResponseMessage, "index", "test", httpRequest);
+            var tran = CatHelper.NewTransaction(out catResponseMessage, "index", "test", httpRequest, isRequest: true);
             httpRequest.Method = "GET";
             HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             StreamReader sr = new StreamReader(httpResponse.GetResponseStream());
@@ -64,7 +64,7 @@ namespace HttpModuleTest
                 context.Response.Write(Environment.NewLine);
                 context.Response.Write("msg  : " + httpResponse.Headers[CatHelper.CatIdTag]);
                 context.Response.Write(Environment.NewLine);
-                
+
                 context.Response.Write(result);
                 context.Response.Write(Environment.NewLine);
                 context.Response.Write("----------resultEnd-----------------");

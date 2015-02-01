@@ -32,7 +32,7 @@ namespace Com.Dianping.Cat.Util
         public const string CatParentIdTag = "X-Cat-ParentId";
         public const string CatIdTag = "X-Cat-Id";
 
-        public static ITransaction NewTransaction(out CatHelperMsg catResponseMessage, string type, string name, WebRequest webRequest = null, HttpResponse webResponse = null, CatHelperMsg catRequestMessage = null)
+        public static ITransaction NewTransaction(out CatHelperMsg catResponseMessage, string type, string name, WebRequest webRequest = null, HttpResponse webResponse = null, CatHelperMsg catRequestMessage = null, bool isRequest = false)
         {
             var tran = Cat.NewTransaction(type, name);
             tran.Status = "0";
@@ -40,16 +40,16 @@ namespace Com.Dianping.Cat.Util
             {
                 //本地request本地response
                 if (webRequest == null && webResponse == null)
-                    catResponseMessage = LocalHttpContextRequest(type, name);
+                    catResponseMessage = LocalHttpContextRequest(type, name, isRequest);
                 //指定request本地response或指定response
                 else if (webRequest != null)
-                    catResponseMessage = LocalHttpContextWebRequest(type, name, webRequest, webResponse);
+                    catResponseMessage = LocalHttpContextWebRequest(type, name, webRequest, webResponse, isRequest);
                 //本地request指定response
                 else if (webResponse != null)
-                    catResponseMessage = LocalHttpContextWebResponse(type, name, webResponse);
+                    catResponseMessage = LocalHttpContextWebResponse(type, name, webResponse, isRequest);
                 //本地request本地response指定catRequestMessage
                 else
-                    catResponseMessage = LocalHttpContextCatRequestMessage(type, name, catRequestMessage);
+                    catResponseMessage = LocalHttpContextCatRequestMessage(type, name, catRequestMessage, isRequest);
             }
             //指定catrequestmessage
             else
@@ -61,7 +61,7 @@ namespace Com.Dianping.Cat.Util
             return tran;
         }
 
-        private static CatHelperMsg LocalHttpContextRequest(string type, string name)
+        private static CatHelperMsg LocalHttpContextRequest(string type, string name, bool isRequest = false)
         {
             var ctx = System.Web.HttpContext.Current;
 
@@ -81,8 +81,6 @@ namespace Com.Dianping.Cat.Util
             var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : response.Headers[CatHelper.CatParentIdTag] : request.Headers[CatHelper.CatParentIdTag];
             var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag] : request.Headers[CatHelper.CatIdTag];
 
-            Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
-
             tree.RootMessageId = catRootId;
             tree.ParentMessageId = catParentId;
             tree.MessageId = catId;
@@ -99,10 +97,13 @@ namespace Com.Dianping.Cat.Util
             Cat.GetProducer().LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
             Cat.GetProducer().LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
 
+            if (isRequest)
+                Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
+
             return new CatHelperMsg(catRootId, catParentId, catId, name);
         }
 
-        private static CatHelperMsg LocalHttpContextWebRequest(string type, string name, WebRequest request, HttpResponse webResponse = null)
+        private static CatHelperMsg LocalHttpContextWebRequest(string type, string name, WebRequest request, HttpResponse webResponse = null, bool isRequest = false)
         {
             var ctx = System.Web.HttpContext.Current;
 
@@ -121,8 +122,6 @@ namespace Com.Dianping.Cat.Util
             var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : response.Headers[CatHelper.CatParentIdTag] : request.Headers[CatHelper.CatParentIdTag];
             var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag] : request.Headers[CatHelper.CatIdTag];
 
-            Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
-
             tree.RootMessageId = catRootId;
             tree.ParentMessageId = catParentId;
             tree.MessageId = catId;
@@ -131,20 +130,21 @@ namespace Com.Dianping.Cat.Util
             response.Headers[CatHelper.CatParentIdTag] = catParentId;
             response.Headers[CatHelper.CatIdTag] = webResponse != null ? ctx.Response.Headers[CatHelper.CatIdTag] : catId;
 
-
             request.Headers[CatHelper.CatRootIdTag] = catRootId;
             request.Headers[CatHelper.CatParentIdTag] = catParentId;
             request.Headers[CatHelper.CatIdTag] = catId;
 
-
             Cat.GetProducer().LogEvent(type, type + ".Server", "0", "LoaclCustomHttpRequest");
-            Cat.GetProducer().LogEvent(type, type + ".Method", "0", string.Format("Request_Method {0} {1}", request.Method, request.RequestUri));
+            Cat.GetProducer().LogEvent(type, type + ".Method", "0", string.Format("{0} {1}", request.Method, request.RequestUri));
             Cat.GetProducer().LogEvent(type, type + ".Client", "0", AppEnv.IP);
+
+            if (isRequest)
+                Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
 
             return new CatHelperMsg(catRootId, catParentId, catId, name);
         }
 
-        private static CatHelperMsg LocalHttpContextWebResponse(string type, string name, HttpResponse webResponse)
+        private static CatHelperMsg LocalHttpContextWebResponse(string type, string name, HttpResponse webResponse, bool isRequest = false)
         {
             var ctx = System.Web.HttpContext.Current;
             var request = ctx.Request;
@@ -163,8 +163,6 @@ namespace Com.Dianping.Cat.Util
             var catParentId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatParentIdTag]) ? string.IsNullOrWhiteSpace(response.Headers[CatHelper.CatParentIdTag]) ? tree.MessageId : response.Headers[CatHelper.CatParentIdTag] : request.Headers[CatHelper.CatParentIdTag];
             var catId = string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? string.IsNullOrWhiteSpace(request.Headers[CatHelper.CatIdTag]) ? Cat.GetProducer().CreateMessageId() : request.Headers[CatHelper.CatIdTag] : request.Headers[CatHelper.CatIdTag];
 
-            Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
-
             tree.RootMessageId = catRootId;
             tree.ParentMessageId = catParentId;
             tree.MessageId = catId;
@@ -181,10 +179,13 @@ namespace Com.Dianping.Cat.Util
             Cat.GetProducer().LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
             Cat.GetProducer().LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
 
+            if (isRequest)
+                Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
+
             return new CatHelperMsg(catRootId, catParentId, catId, name);
         }
 
-        private static CatHelperMsg LocalHttpContextCatRequestMessage(string type, string name, CatHelperMsg catRequestMessage = null)
+        private static CatHelperMsg LocalHttpContextCatRequestMessage(string type, string name, CatHelperMsg catRequestMessage = null, bool isRequest = false)
         {
             var ctx = System.Web.HttpContext.Current;
 
@@ -204,8 +205,6 @@ namespace Com.Dianping.Cat.Util
             var catParentId = catRequestMessage != null ? catRequestMessage.CatParentId : tree.MessageId;
             var catId = catRequestMessage != null ? catRequestMessage.CatId : Cat.GetProducer().CreateMessageId();
 
-            Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
-
             tree.RootMessageId = catRootId;
             tree.ParentMessageId = catParentId;
             tree.MessageId = catId;
@@ -221,6 +220,9 @@ namespace Com.Dianping.Cat.Util
             Cat.GetProducer().LogEvent(type, type + ".Server", "0", GetURLServerValue(request));
             Cat.GetProducer().LogEvent(type, type + ".Method", "0", GetURLMethodValue(request));
             Cat.GetProducer().LogEvent(type, type + ".Client", "0", AppEnv.GetClientIp(request));
+
+            if (isRequest)
+                Cat.LogEvent("RemoteCall", "HttpRequest", "0", catId);
 
             return new CatHelperMsg(catRootId, catParentId, catId, name);
         }
@@ -238,8 +240,6 @@ namespace Com.Dianping.Cat.Util
             var catParentId = catRequestMessage != null ? catRequestMessage.CatParentId : tree.MessageId;
             var catId = catRequestMessage != null ? catRequestMessage.CatId : Cat.GetProducer().CreateMessageId();
 
-            Cat.LogEvent("RemoteCall", "Request", "0", catId);
-
             tree.RootMessageId = catRootId;
             tree.ParentMessageId = catParentId;
             tree.MessageId = catId;
@@ -248,6 +248,8 @@ namespace Com.Dianping.Cat.Util
                 Cat.LogEvent(type, name, "0", string.Format("Mothed.Request : {0}", name));
             else
                 Cat.LogEvent(type, name, "0", string.Format("Mothed.Response : {0}", catRequestMessage.RequestMothed));
+
+            Cat.LogEvent("RemoteCall", "Request", "0", catId);
 
             return new CatHelperMsg(catRootId, catId, Cat.GetProducer().CreateMessageId(), name);
         }
@@ -293,7 +295,6 @@ namespace Com.Dianping.Cat.Util
             Console.WriteLine("par  : {0}", tree.ParentMessageId);
             Console.WriteLine("msg  : {0}", tree.MessageId);
         }
-
 
         #region url info
         private static string GetURLServerValue(HttpRequest request)
